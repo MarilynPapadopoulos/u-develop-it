@@ -1,3 +1,4 @@
+const mysql = require('mysql2');
 const express = require('express');
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -5,12 +6,22 @@ const app = express();
 app.use(express.urlencoded({ exteneded: false}));
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Hello World'
-    });
-});
+//Connect to database
+const db = mysql.createConnection(
+    {
+        host: 'localhost',
+        //MySQL username
+        user: 'root',
+        //MySQL password
+        password: 'WEBcourse2020',
+        database: 'election'
+    },
+    console.log('Connected to the election database.')
+);
 
+db.query(`SELECT * FROM candidates`, (err, rows) => {
+    console.log(rows);
+});
 
 
 //Default response (Not Found)
